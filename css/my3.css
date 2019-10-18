@@ -1,0 +1,21 @@
+body
+{
+  background-color: DimGray;
+}
+.jumbotron
+{
+  margin-top: 20px;
+  text-align: center;
+  background-color: Gray;
+}
+.error
+{
+  background-color: IndianRed;
+  border-radius: 10px;
+}
+.tablesp
+{
+  margin-left: auto;
+  margin-right: auto;
+  width: 6em;
+}
