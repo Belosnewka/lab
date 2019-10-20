@@ -44,4 +44,20 @@ function writeHit($ip, $from, $where)
    $stmt->execute();
    return $stmt;
  }
+ function writeNewEvent($allowed, $values)
+ {
+   require "ConnectBD.php";
+   $sql = "INSERT INTO events SET ".pdoSet($allowed);
+   $stmt = $pdo->prepare($sql);
+   $stmt->execute($values);
+ }
+ function pdoSet($allowed) // функция для оформления в sql запрос - какие поля буду заполнять и чем (поле $field получит $field из $values), нашла и переделала для себя
+ {
+  $set = '';
+  foreach ($allowed as $field)
+  {
+      $set.="`".str_replace("`","``",$field)."`". "=:$field, ";
+  }
+  return substr($set, 0, -2);
+}
 ?>
