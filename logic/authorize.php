@@ -26,7 +26,7 @@ function authorize ($log, $pas)
 $result=authorize($_POST['user'], $_POST['pass']);
 if ($result==-1) $ans='Логина нет в системе!';
 else if ($result==0) $ans= 'Неверный пароль!';
-else header("Location: secret.php");
+else header("Location: ../secret.php");
 ?>
 
 <link href="https://getbootstrap.ru/docs/3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
