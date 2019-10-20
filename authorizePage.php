@@ -8,7 +8,7 @@ if (isset($_SESSION['user']))
 
 ?>
 <link href="https://getbootstrap.ru/docs/3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="my3.css">
+<link rel="stylesheet" type="text/css" href="css/my3.css">
 <div class="jumbotron col-lg-4 col-sm-offset-4">
   <form method="POST" action="logic/authorize.php" class="form-inline">
      Username: <input type="text" name="user" />
