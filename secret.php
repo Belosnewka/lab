@@ -19,7 +19,8 @@ $res2=askViewsFromBD();
       <th>Кол-во участников</th>
     </tr>
       <?php
-      while ($row = $res->fetch(PDO::FETCH_LAZY)){
+      foreach ($res as $row)
+      {
       ?>
           <tr>
             <td><?php echo $row['name'] ?></td>
@@ -41,7 +42,8 @@ $res2=askViewsFromBD();
       <th>Браузер</th>
     </tr>
       <?php
-      while ($row = $res2->fetch(PDO::FETCH_LAZY)){
+      foreach ($res2 as $row)
+      {
       ?>
           <tr>
             <td><?php echo $row['page'] ?></td>
@@ -58,7 +60,8 @@ $res2=askViewsFromBD();
       <th>ip</th>
     </tr>
       <?php
-      while ($row = $res1->fetch(PDO::FETCH_LAZY)){
+      foreach ($res1 as $row)
+      {
       ?>
           <tr>
             <td><?php echo $row['ip'] ?></td>
