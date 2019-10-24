@@ -28,21 +28,21 @@ function writeHit($ip, $from, $where)
    require "ConnectBD.php";
    $stmt = $pdo->prepare("SELECT * FROM events ORDER BY id ASC");
    $stmt->execute();
-   return $stmt;
+   return pdoToArray($stmt);
  }
  function askIpFromBD()
  {
    require "ConnectBD.php";
    $stmt = $pdo->prepare("SELECT DISTINCT ip FROM ips");
    $stmt->execute();
-   return $stmt;
+   return pdoToArray($stmt);
  }
  function askViewsFromBD()
  {
    require "ConnectBD.php";
    $stmt = $pdo->prepare("SELECT * FROM views ORDER BY countOfViews ASC");
    $stmt->execute();
-   return $stmt;
+   return pdoToArray($stmt);
  }
  function writeNewEvent($allowed, $values)
  {
@@ -59,5 +59,16 @@ function writeHit($ip, $from, $where)
       $set.="`".str_replace("`","``",$field)."`". "=:$field, ";
   }
   return substr($set, 0, -2);
+}
+function pdoToArray($stmt)
+{
+  $res=array();
+  $i=0;
+  while ($row = $stmt->fetch())
+  {
+    $res[$i]=$row;
+    $i++;
+  }
+  return $res;
 }
 ?>
