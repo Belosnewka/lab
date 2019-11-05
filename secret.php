@@ -59,6 +59,7 @@ $res3=askAllCitiesFromBD();
           </tr>
     <?php } ?>
   </table>
+  <p><a class="btn btn-lg btn-danger" href="addCityForm.php" role="button">Добавить город</a></p>
   <h2>Просмотры</h2>
   <table class="table table-bordered table-hover table-sm tablesp">
     <tr>

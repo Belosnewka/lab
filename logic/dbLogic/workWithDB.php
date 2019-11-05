@@ -73,6 +73,13 @@ function writeHit($ip, $from, $where) //записываем посещение 
    $stmt->execute([$id]);
    return $stmt->fetch();
  }
+ function writeNewCity($allowed, $values)
+ {
+   require "ConnectBD.php";
+   $sql = "INSERT INTO cities SET ".pdoSet($allowed);
+   $stmt = $pdo->prepare($sql);
+   $stmt->execute($values);
+ }
   //------------------------Функции с таблицами посещений и пользователей----------------------------------
  function askIpFromBD()
  {
