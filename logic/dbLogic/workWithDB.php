@@ -87,6 +87,12 @@ function writeHit($ip, $from, $where) //записываем посещение 
    $stmt = $pdo->prepare($sql);
    $stmt->execute($values);
  }
+ function deleteCity($id)
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("DELETE FROM cities WHERE idCity = ?");
+   $stmt->execute([$id]);
+ }
   //------------------------Функции с таблицами посещений и пользователей----------------------------------
  function askIpFromBD()
  {
