@@ -16,6 +16,7 @@ foreach ($res as $row)
   {
     $mes='Такой город уже есть!';
     header("Location: ../errorPage.php?mes=$mes");
+    exit;
   }
 }
 if ($del)
@@ -38,7 +39,7 @@ else
     unlink($path);
   }
 }
-if(isset($_FILES["file"]))
+if(file_exists($_FILES["file"]['tmp_name']))
 {
   $foto=$_FILES["file"];
   if($foto["error"])
@@ -54,7 +55,7 @@ if(isset($_FILES["file"]))
   }
   $name=$city.".jpg";
   move_uploaded_file($foto["tmp_name"], "../images/$name");
-  esizeImage("../images/$name", 150, -1);
+  resizeImage("../images/$name", 150, -1);
 }
 $allowed = array("city", "production", "people");
 $values = array($city, $volume, $participants);

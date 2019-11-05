@@ -13,6 +13,7 @@ if($res2['master']!=$master)
 {
   $mes='Вы не можете изменить событие другого товарища!';
   header("Location: ../errorPage.php?mes=$mes");
+  exit;
 }
 $res=askAllCitiesFromBD();
 $checkCity=0;

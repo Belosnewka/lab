@@ -9,19 +9,20 @@ if($res)
   $res2=askAllEventsFromBD();
   foreach ($res2 as $row)
   {
-    if ($row['city']===$id)
+    if ($row['city']===$res['city'])
     {
       $mes='Вы не можете удалить город с событием!';
       header("Location: ../errorPage.php?mes=$mes");
+      exit;
     }
   }
+  deleteCity($id);
   $name=$res['city'].".jpg";
   $path="../images/$name";
   if (file_exists($path))
   {
     unlink($path);
   }
-  deleteCity($id);
   header("Location: ../secret.php");
 }
 ?>

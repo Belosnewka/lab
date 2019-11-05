@@ -13,9 +13,10 @@ foreach ($res as $row)
   {
     $mes='Такой город уже есть!';
     header("Location: ../errorPage.php?mes=$mes");
+    exit;
   }
 }
-if(!empty($_FILES["file"]))
+if(file_exists($_FILES["file"]['tmp_name']))
 {
   $foto=$_FILES["file"];
   if($foto["error"])
@@ -27,14 +28,14 @@ if(!empty($_FILES["file"]))
   {
     $mes='Не jpeg изображение';
     header("Location: ../errorPage.php?mes=$mes");
+    exit;
   }
   $name=$city.".jpg";
   move_uploaded_file($foto["tmp_name"], "../images/$name");
   resizeImage("../images/$name", 150, -1);
+}
   $allowed = array("city", "production", "people");
   $values = array($city, $volume, $participants);
   writeNewCity($allowed, $values);
-  unset($_FILES["file"]);
   header("Location: ../secret.php");
-}
 ?>
