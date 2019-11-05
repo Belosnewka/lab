@@ -50,10 +50,11 @@ if(isset($_FILES["file"]))
   {
     $mes='Не jpeg изображение';
     header("Location: ../errorPage.php?mes=$mes");
+    exit;
   }
   $name=$city.".jpg";
   move_uploaded_file($foto["tmp_name"], "../images/$name");
-  resizeImage("../images/$name", 150, -1);
+  esizeImage("../images/$name", 150, -1);
 }
 $allowed = array("city", "production", "people");
 $values = array($city, $volume, $participants);
