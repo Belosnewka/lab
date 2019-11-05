@@ -1,4 +1,5 @@
 <?php
+require "autho.php";
 include "dbLogic/workWithDB.php";
 session_start();
 $name=""; $date=""; $city=""; $master=""; $participants="";
