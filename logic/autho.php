@@ -8,12 +8,12 @@ if (isset($_GET['do']))
 	  unset($_SESSION['date']);
 		session_destroy();
 	}
-	header("Location: ../index.php");
+	header("Location: index.php");
 	exit;
 }
 
 if(!$_SESSION['user']){
-	header("Location: ../authorizePage.php");
+	header("Location: authorizePage.php");
 	exit;
 }
 ?>
