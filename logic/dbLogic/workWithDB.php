@@ -26,9 +26,22 @@ function writeHit($ip, $from, $where)
  function askAllEventsFromBD()
  {
    require "ConnectBD.php";
-   $stmt = $pdo->prepare("SELECT * FROM events INNER JOIN cities ON events.city=cities.id");
+   $stmt = $pdo->prepare("SELECT * FROM events INNER JOIN cities ON events.city=cities.idCity");
    $stmt->execute();
    return pdoToArray($stmt);
+ }
+ function askEventWithIDFromBD($id)
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("SELECT * FROM events WHERE id=?");
+   $stmt->execute([$id]);
+   return $stmt->fetch();
+ }
+ function deleteEvent($id)
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("DELETE FROM events WHERE id = ?");
+   $stmt->execute([$id]);
  }
  function askIpFromBD()
  {
@@ -54,7 +67,7 @@ function writeHit($ip, $from, $where)
  function askAllCitiesFromBD()
  {
    require "ConnectBD.php";
-   $stmt = $pdo->prepare("SELECT * FROM cities ORDER BY id ASC");
+   $stmt = $pdo->prepare("SELECT * FROM cities");
    $stmt->execute();
    return pdoToArray($stmt);
  }

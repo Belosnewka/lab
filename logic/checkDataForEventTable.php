@@ -14,7 +14,7 @@ foreach ($res as $row)
 {
   if($row['city']===$city)
   {
-    $checkCity=$row['id'];
+    $checkCity=$row['idCity'];
     break;
   }
 }

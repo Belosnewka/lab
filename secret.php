@@ -9,7 +9,7 @@ $res3=askAllCitiesFromBD();
 ?>
 <link href="https://getbootstrap.ru/docs/3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="css/my3.css">
-<div class="jumbotron col-lg-4 col-sm-offset-4">
+<div class="jumbotron col-lg-6 col-sm-offset-3">
  <h1> Здравствуй, товарищ! </h1>
   <table class="table table-bordered table-hover table-sm tablesp">
     <tr>
@@ -18,6 +18,7 @@ $res3=askAllCitiesFromBD();
       <th>Город</th>
       <th>Ответственный</th>
       <th>Кол-во участников</th>
+      <th>Действие</th>
     </tr>
       <?php
       foreach ($res as $row)
@@ -29,6 +30,8 @@ $res3=askAllCitiesFromBD();
             <td> <?php echo $row['city'] ?>  </td>
             <td> <?php echo $row['master'] ?>  </td>
             <td> <?php echo $row['participants'] ?>  </td>
+            <td><p><a class="btn btn-info" href="logic/deleteEvent.php?id=<?php echo $row['id']?>" role="button">Удалить</a></p>
+              <a class="btn btn-success" href="addEvent.php" role="button">Изменить</a></td>
           </tr>
     <?php } ?>
   </table>
@@ -40,6 +43,7 @@ $res3=askAllCitiesFromBD();
       <th>Жители</th>
       <th>Объем производства</th>
       <th>Фото</th>
+      <th>Действие</th>
     </tr>
       <?php
       foreach ($res3 as $row)
@@ -50,6 +54,8 @@ $res3=askAllCitiesFromBD();
             <td><?php echo $row['people'] ?></td>
             <td> <?php echo $row['production'] ?> </td>
             <td> <img src="images/<?php echo $row['city'] ?>.jpg"> </td>
+            <td><p><a class="btn btn-info" href="addEvent.php" role="button">Удалить</a></p>
+              <a class="btn btn-success" href="addEvent.php" role="button">Изменить</a></td>
           </tr>
     <?php } ?>
   </table>
@@ -91,5 +97,5 @@ $res3=askAllCitiesFromBD();
   </table>
     <h2><?=$_SESSION['date']?></h2>
     <p><a class="btn btn-lg btn-danger" href="secret.php?do=logout" role="button">Выйти</a></p>
-    <p><a class="btn btn-lg btn-danger" href="index.php">Вернуться на глвную</a></p>
+    <p><a class="btn btn-lg btn-danger" href="Location: ../index.php">Вернуться на глвную</a></p>
 </div>
