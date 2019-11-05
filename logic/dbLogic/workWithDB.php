@@ -1,5 +1,5 @@
 <?php
-function writeHit($ip, $from, $where)
+function writeHit($ip, $from, $where) //записываем посещение в бд
 {
   require "ConnectBD.php";
    if ($from)
@@ -23,6 +23,7 @@ function writeHit($ip, $from, $where)
    $stmt = $pdo->prepare("INSERT INTO ips (ip) VALUES (?)");
    $stmt->execute([$ip]);
  }
+ //------------------------Функции с таблицей событий----------------------------------
  function askAllEventsFromBD()
  {
    require "ConnectBD.php";
@@ -43,6 +44,36 @@ function writeHit($ip, $from, $where)
    $stmt = $pdo->prepare("DELETE FROM events WHERE id = ?");
    $stmt->execute([$id]);
  }
+ function writeNewEvent($allowed, $values)
+ {
+   require "ConnectBD.php";
+   $sql = "INSERT INTO events SET ".pdoSet($allowed);
+   $stmt = $pdo->prepare($sql);
+   $stmt->execute($values);
+ }
+ function updateEvent($allowed, $values, $id)
+ {
+   require "ConnectBD.php";
+   $sql = "UPDATE events SET ".pdoSet($allowed)." WHERE id=$id";
+   $stmt = $pdo->prepare($sql);
+   $stmt->execute($values);
+ }
+  //------------------------Функции с таблицей городов----------------------------------
+ function askAllCitiesFromBD()
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("SELECT * FROM cities");
+   $stmt->execute();
+   return pdoToArray($stmt);
+ }
+ function askCityWithIDFromBD($id)
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("SELECT * FROM cities WHERE idCity=?");
+   $stmt->execute([$id]);
+   return $stmt->fetch();
+ }
+  //------------------------Функции с таблицами посещений и пользователей----------------------------------
  function askIpFromBD()
  {
    require "ConnectBD.php";
@@ -57,20 +88,7 @@ function writeHit($ip, $from, $where)
    $stmt->execute();
    return pdoToArray($stmt);
  }
- function writeNewEvent($allowed, $values)
- {
-   require "ConnectBD.php";
-   $sql = "INSERT INTO events SET ".pdoSet($allowed);
-   $stmt = $pdo->prepare($sql);
-   $stmt->execute($values);
- }
- function askAllCitiesFromBD()
- {
-   require "ConnectBD.php";
-   $stmt = $pdo->prepare("SELECT * FROM cities");
-   $stmt->execute();
-   return pdoToArray($stmt);
- }
+   //------------------------Вспомогательные функции----------------------------------
  function pdoSet($allowed) // функция для оформления в sql запрос - какие поля буду заполнять и чем (поле $field получит $field из $values), нашла и переделала для себя
  {
   $set = '';

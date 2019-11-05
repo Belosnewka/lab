@@ -31,7 +31,7 @@ $res3=askAllCitiesFromBD();
             <td> <?php echo $row['master'] ?>  </td>
             <td> <?php echo $row['participants'] ?>  </td>
             <td><p><a class="btn btn-info" href="logic/deleteEvent.php?id=<?php echo $row['id']?>" role="button">Удалить</a></p>
-              <a class="btn btn-success" href="addEvent.php" role="button">Изменить</a></td>
+              <a class="btn btn-success" href="updateEventForm.php?id=<?php echo $row['id']?>" role="button">Изменить</a></td>
           </tr>
     <?php } ?>
   </table>
