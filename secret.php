@@ -55,7 +55,7 @@ $res3=askAllCitiesFromBD();
             <td> <?php echo $row['production'] ?> </td>
             <td> <img src="images/<?php echo $row['city'] ?>.jpg"> </td>
             <td><p><a class="btn btn-info" href="addEvent.php" role="button">Удалить</a></p>
-              <a class="btn btn-success" href="addEvent.php" role="button">Изменить</a></td>
+              <a class="btn btn-success" href="updateCityForm.php?id=<?php echo $row['idCity']?>" role="button">Изменить</a></td>
           </tr>
     <?php } ?>
   </table>
