@@ -34,6 +34,7 @@ if(!empty($_FILES["file"]))
   $allowed = array("city", "production", "people");
   $values = array($city, $volume, $participants);
   writeNewCity($allowed, $values);
+  unset($_FILES["file"]);
   header("Location: ../secret.php");
 }
 ?>
