@@ -26,7 +26,7 @@ function writeHit($ip, $from, $where)
  function askAllEventsFromBD()
  {
    require "ConnectBD.php";
-   $stmt = $pdo->prepare("SELECT * FROM events ORDER BY id ASC");
+   $stmt = $pdo->prepare("SELECT * FROM events INNER JOIN cities ON events.city=cities.id");
    $stmt->execute();
    return pdoToArray($stmt);
  }
@@ -50,6 +50,13 @@ function writeHit($ip, $from, $where)
    $sql = "INSERT INTO events SET ".pdoSet($allowed);
    $stmt = $pdo->prepare($sql);
    $stmt->execute($values);
+ }
+ function askAllCitiesFromBD()
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("SELECT * FROM cities ORDER BY id ASC");
+   $stmt->execute();
+   return pdoToArray($stmt);
  }
  function pdoSet($allowed) // функция для оформления в sql запрос - какие поля буду заполнять и чем (поле $field получит $field из $values), нашла и переделала для себя
  {

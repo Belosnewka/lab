@@ -5,6 +5,7 @@ include "logic/dbLogic/workWithDB.php";
 $res=askAllEventsFromBD();
 $res1=askIpFromBD();
 $res2=askViewsFromBD();
+$res3=askAllCitiesFromBD();
 ?>
 <link href="https://getbootstrap.ru/docs/3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="css/my3.css">
@@ -32,6 +33,26 @@ $res2=askViewsFromBD();
     <?php } ?>
   </table>
   <p><a class="btn btn-lg btn-danger" href="addEvent.php" role="button">Добавить событие</a></p>
+  <h2>Города</h2>
+  <table class="table table-bordered table-hover table-sm tablesp">
+    <tr>
+      <th>Название</th>
+      <th>Жители</th>
+      <th>Объем производства</th>
+      <th>Фото</th>
+    </tr>
+      <?php
+      foreach ($res3 as $row)
+      {
+      ?>
+          <tr>
+            <td><?php echo $row['city'] ?></td>
+            <td><?php echo $row['people'] ?></td>
+            <td> <?php echo $row['production'] ?> </td>
+            <td> <img src="images/<?php echo $row['city'] ?>.jpg"> </td>
+          </tr>
+    <?php } ?>
+  </table>
   <h2>Просмотры</h2>
   <table class="table table-bordered table-hover table-sm tablesp">
     <tr>
