@@ -1,13 +1,14 @@
 <?php
 require "autho.php";
 include "dbLogic/workWithDB.php";
-$name=""; $date=""; $city=""; $master=""; $participants="";$id=0;
+$name=""; $date=""; $city=""; $master=""; $participants="";$id=0; $fulltxt="";
 if (isset($_POST['name'])) $name=$_POST['name'];
 if (isset($_POST['date'])) $date=$_POST['date'];
 if (isset($_POST['city'])) $city=$_POST['city'];
 if (isset($_POST['participants'])) $participants=$_POST['participants'];
 if(isset($_SESSION['user'])) $master=$_SESSION['user'];
 if (isset($_GET['id'])) $id=$_GET['id'];
+$fulltxt=$name." ".$city;
 $res2=askEventWithIDFromBD($id);
 if($res2['master']!=$master)
 {
@@ -27,8 +28,8 @@ foreach ($res as $row)
 }
 if($checkCity>0)
 {
-  $allowed = array("name","date","city", "master", "participants");
-  $values = array($name, $date, $checkCity, $master, $participants);
+  $allowed = array("name","date","city", "master", "participants", "fulltxt");
+  $values = array($name, $date, $checkCity, $master, $participants, $fulltxt);
   updateEvent($allowed, $values, $id);
   header("Location: ../secret.php");
 }
