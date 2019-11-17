@@ -7,10 +7,36 @@ $res1=askIpFromBD();
 $res2=askViewsFromBD();
 $res3=askAllCitiesFromBD();
 ?>
+<head>
 <link href="https://getbootstrap.ru/docs/3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="css/my3.css">
+<script src="js/jquery-3.4.1.js"></script>
+<script src="js/makeTable.js"></script>
+<script>
+function askShowEvents(str)
+{
+  $.ajax({
+       type: "POST",
+       url: "logic/search.php",
+       dataType: "json",
+       data: {find:str}
+   }).done(function(result)
+       {
+           if(result=="no suggestion" || result=="") $("#searchResultEvent").html(result);
+           else $("#searchResultEvent").html(makeTableEvent(result));
+       });
+}
+</script>
+</head>
 <div class="jumbotron col-lg-6 col-sm-offset-3">
  <h1> Здравствуй, товарищ! </h1>
+ <form>
+    <div class="col-sm-offset-9 col-xs-3 form-group row">
+      <input class="form-control" type="text" value="Найти" onkeyup="askShowEvents(this.value)">
+    </div>
+  </form>
+  </br>
+  <div id="searchResultEvent"></div>
   <table class="table table-bordered table-hover table-sm tablesp">
     <tr>
       <th>Название</th>
