@@ -58,6 +58,21 @@ function writeHit($ip, $from, $where) //записываем посещение 
    $stmt = $pdo->prepare($sql);
    $stmt->execute($values);
  }
+ function findEvents($str)
+ {
+   require "ConnectBD.php";
+   if(!is_numeric($str))
+   {
+     $stmt = $pdo->prepare("SELECT *, MATCH (fulltxt) AGAINST ('$str') as relev FROM events INNER JOIN cities ON events.city=cities.idCity and MATCH (fulltxt) AGAINST ('$str')>0  ORDER BY relev DESC");
+   }
+   else
+   {
+     $n=(int)$str;
+     $stmt = $pdo->prepare("SELECT * FROM events INNER JOIN cities ON events.city=cities.idCity and participants = '$n'");
+   }
+   $stmt->execute();
+   return pdoToArray($stmt);
+ }
   //------------------------Функции с таблицей городов----------------------------------
  function askAllCitiesFromBD()
  {
