@@ -123,6 +123,22 @@ function writeHit($ip, $from, $where) //записываем посещение 
    $stmt->execute();
    return pdoToArray($stmt);
  }
+ //------------------------Функции с таблицой пользователей----------------------------------
+function chekLogin($login)
+{
+  require "ConnectBD.php";
+  $stmt = $pdo->prepare("SELECT * FROM users WHERE login = '$login'");
+  $stmt->execute();
+  return pdoToArray($stmt);
+}
+function writeNewUser($allowed, $values)
+{
+  require "ConnectBD.php";
+  $sql = "INSERT INTO users SET ".pdoSet($allowed);
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute($values);
+  return $pdo->lastInsertId();
+}
   //------------------------Функции с таблицами посещений и пользователей----------------------------------
  function askIpFromBD()
  {

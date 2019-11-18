@@ -5,8 +5,8 @@ $hint="";
 $response="";
 $find="";
 $table="";
-if (isset($_POST["find"])) $find=$_POST["find"];
-if (isset($_POST["table"])) $table=$_POST["table"];
+if (isset($_POST["find"])) $find=htmlspecialchars($_POST["find"]);
+if (isset($_POST["table"])) $table=htmlspecialchars($_POST["table"]);
 
 if (strlen($find)>0)
 {
