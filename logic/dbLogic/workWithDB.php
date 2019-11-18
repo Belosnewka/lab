@@ -63,7 +63,7 @@ function writeHit($ip, $from, $where) //записываем посещение 
    require "ConnectBD.php";
    if(!is_numeric($str))
    {
-     $stmt = $pdo->prepare("SELECT *, MATCH (fulltxt) AGAINST ('$str') as relev FROM events INNER JOIN cities ON events.city=cities.idCity and MATCH (fulltxt) AGAINST ('$str')>0  ORDER BY relev DESC");
+     $stmt = $pdo->prepare("SELECT *, MATCH (fulltxt) AGAINST ('*$str*' IN BOOLEAN MODE) as relev FROM events INNER JOIN cities ON events.city=cities.idCity and MATCH (fulltxt) AGAINST ('*$str*' IN BOOLEAN MODE)>0  ORDER BY relev DESC");
    }
    else
    {
@@ -102,11 +102,26 @@ function writeHit($ip, $from, $where) //записываем посещение 
    $stmt = $pdo->prepare($sql);
    $stmt->execute($values);
  }
- function deleteCity($id)
+ function deleteCities($id)
  {
    require "ConnectBD.php";
    $stmt = $pdo->prepare("DELETE FROM cities WHERE idCity = ?");
    $stmt->execute([$id]);
+ }
+ function findCities($str)
+ {
+   require "ConnectBD.php";
+   if(!is_numeric($str))
+   {
+     $stmt = $pdo->prepare("SELECT *, MATCH (city) AGAINST ('*$str*' IN BOOLEAN MODE) as relev FROM cities WHERE MATCH (city) AGAINST ('*$str*' IN BOOLEAN MODE)>0  ORDER BY relev DESC");
+   }
+   else
+   {
+     $n=(int)$str;
+     $stmt = $pdo->prepare("SELECT * FROM cities WHERE production = '$n' or people = '$n'");
+   }
+   $stmt->execute();
+   return pdoToArray($stmt);
  }
   //------------------------Функции с таблицами посещений и пользователей----------------------------------
  function askIpFromBD()

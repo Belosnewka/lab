@@ -1,13 +1,17 @@
 <?php
 require "autho.php";
 include "dbLogic/workWithDB.php";
-if (isset($_POST["find"])) $find=$_POST["find"];
 $hint="";
 $response="";
+$find="";
+$table="";
+if (isset($_POST["find"])) $find=$_POST["find"];
+if (isset($_POST["table"])) $table=$_POST["table"];
 
 if (strlen($find)>0)
 {
-  $hint=findEvents($find);
+  if($table=="events") $hint=findEvents($find);
+  if($table=="cities") $hint=findCities($find);
 }
 else
 {

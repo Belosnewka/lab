@@ -13,17 +13,25 @@ $res3=askAllCitiesFromBD();
 <script src="js/jquery-3.4.1.js"></script>
 <script src="js/makeTable.js"></script>
 <script>
-function askShowEvents(str)
+function askShow(str, tab)
 {
   $.ajax({
        type: "POST",
        url: "logic/search.php",
        dataType: "json",
-       data: {find:str}
+       data: {find:str, table:tab}
    }).done(function(result)
        {
+         if(tab=='events')
+         {
            if(result=="no suggestion" || result=="") $("#searchResultEvent").html(result);
            else $("#searchResultEvent").html(makeTableEvent(result));
+         }
+         if(tab=='cities')
+         {
+           if(result=="no suggestion" || result=="") $("#searchResultCity").html(result);
+           else $("#searchResultCity").html(makeTableCity(result));
+         }
        });
 }
 </script>
@@ -32,7 +40,7 @@ function askShowEvents(str)
  <h1> Здравствуй, товарищ! </h1>
  <form>
     <div class="col-sm-offset-9 col-xs-3 form-group row">
-      <input class="form-control" type="text" value="Найти" onkeyup="askShowEvents(this.value)">
+      <input class="form-control" type="text" value="Найти" onkeyup="askShow(this.value, 'events')">
     </div>
   </form>
   </br>
@@ -63,6 +71,13 @@ function askShowEvents(str)
   </table>
   <p><a class="btn btn-lg btn-danger" href="addEvent.php" role="button">Добавить событие</a></p>
   <h2>Города</h2>
+  <form>
+     <div class="col-sm-offset-9 col-xs-3 form-group row">
+       <input class="form-control" type="text" value="Найти" onkeyup="askShow(this.value, 'cities')">
+     </div>
+   </form>
+   </br>
+   <div id="searchResultCity"></div>
   <table class="table table-bordered table-hover table-sm tablesp">
     <tr>
       <th>Название</th>
