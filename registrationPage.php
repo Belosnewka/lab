@@ -13,6 +13,7 @@ function checkLogin(str)
    }).done(function(result)
        {
          if (result=="no") $("#loginError").html("Логин занят!");
+         else $("#loginError").html("");
        });
 }
 </script>
