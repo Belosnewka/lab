@@ -137,6 +137,9 @@ function askShow(str, tab)
           </tr>
     <?php } ?>
   </table>
+  <p class="col-sm-offset-2 form-group row">
+    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Af80fed1c4f93f2d3b03e728a15918c0df713e2d6ac25a1db72e9f998d80334d3&amp;width=400&amp;height=250&amp;lang=ru_RU&amp;scroll=true"></script>
+  </p>
     <h2><?=$_SESSION['date']?></h2>
     <p><a class="btn btn-lg btn-danger" href="secret.php?do=logout" role="button">Выйти</a></p>
     <p><a class="btn btn-lg btn-danger" href="Location: ../index.php">Вернуться на глвную</a></p>
