@@ -27,7 +27,19 @@ function writeHit($ip, $from, $where) //записываем посещение 
  function askAllEventsFromBD()
  {
    require "ConnectBD.php";
-   $stmt = $pdo->prepare("SELECT * FROM events INNER JOIN cities ON events.city=cities.idCity");
+   $stmt = $pdo->prepare("SELECT * FROM events LEFT JOIN citizens ON events.master=citizens.login LEFT JOIN cities ON events.city=cities.idCity");
+   $stmt->execute();
+   return pdoToArray($stmt);
+ }
+ function askAllEventsFromBDSort($dat,  $people)
+ {
+   require "ConnectBD.php";
+   if($dat && !$people)
+   $stmt = $pdo->prepare("SELECT * FROM events LEFT JOIN citizens ON events.master=citizens.login LEFT JOIN cities ON events.city=cities.idCity ORDER BY events.date");
+   else if (!$dat && $people)
+   $stmt = $pdo->prepare("SELECT * FROM events LEFT JOIN citizens ON events.master=citizens.login LEFT JOIN cities ON events.city=cities.idCity ORDER BY events.participants DESC");
+   else
+   $stmt = $pdo->prepare("SELECT * FROM events LEFT JOIN citizens ON events.master=citizens.login LEFT JOIN cities ON events.city=cities.idCity ORDER BY events.date ASC, events.participants DESC");
    $stmt->execute();
    return pdoToArray($stmt);
  }
@@ -63,7 +75,7 @@ function writeHit($ip, $from, $where) //записываем посещение 
    require "ConnectBD.php";
    if(!is_numeric($str))
    {
-     $stmt = $pdo->prepare("SELECT *, MATCH (fulltxt) AGAINST ('*$str*' IN BOOLEAN MODE) as relev FROM events INNER JOIN cities ON events.city=cities.idCity and MATCH (fulltxt) AGAINST ('*$str*' IN BOOLEAN MODE)>0  ORDER BY relev DESC");
+     $stmt = $pdo->prepare("SELECT *, MATCH (fulltxt) AGAINST ('*$str*' IN BOOLEAN MODE) as relev FROM events LEFT JOIN citizens ON (events.master=citizens.login and MATCH (fulltxt) AGAINST ('*$str*' IN BOOLEAN MODE)>0) LEFT JOIN cities ON events.city=cities.idCity WHERE citizens.fio IS NOT NULL ORDER BY relev DESC");
    }
    else
    {
@@ -154,7 +166,119 @@ function writeNewUser($allowed, $values)
    $stmt->execute();
    return pdoToArray($stmt);
  }
+ //------------------------Преступления, жители, свидетели функции----------------------------------
+ function askCrimesFromBD()
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("SELECT * FROM crimes LEFT OUTER JOIN citizens ON crimes.witness=citizens.idCitizen LEFT OUTER JOIN events ON crimes.event=events.id");
+   $stmt->execute();
+   return pdoToArray($stmt);
+ }
+ function askCrimeIDFromBD($id)
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("SELECT * FROM crimes WHERE idCrime=?");
+   $stmt->execute([$id]);
+   return $stmt->fetch();
+ }
+ function writeNewCrime($allowed, $values)
+ {
+   require "ConnectBD.php";
+   $sql = "INSERT INTO crimes SET ".pdoSet($allowed);
+   $stmt = $pdo->prepare($sql);
+   $stmt->execute($values);
+   return $pdo->lastInsertId();
+ }
+ function updateCrime($allowed, $values, $id)
+ {
+   require "ConnectBD.php";
+   $sql = "UPDATE crimes SET ".pdoSet($allowed)." WHERE idCrime=$id";
+   $stmt = $pdo->prepare($sql);
+   $stmt->execute($values);
+ }
+ function deleteCrime($id)
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("DELETE FROM crimes WHERE idCrime = ?");
+   $stmt->execute([$id]);
+ }
+ function askCitizensFromBD()
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("SELECT * FROM citizens INNER JOIN cities ON citizens.city=cities.idCity INNER JOIN users ON citizens.login=users.id");
+   $stmt->execute();
+   return pdoToArray($stmt);
+ }
+ function askRightsFromBD($id)
+ {
+   require "ConnectBD.php";
+   $stmt = $pdo->prepare("SELECT rights FROM citizens WHERE login = '$id'");
+   $stmt->execute();
+   return pdoToArray($stmt);
+ }
+ function writeNewCheckedUser($allowed, $values)
+ {
+   require "ConnectBD.php";
+   $sql = "INSERT INTO citizens SET ".pdoSet($allowed);
+   $stmt = $pdo->prepare($sql);
+   $stmt->execute($values);
+   return $pdo->lastInsertId();
+ }
+ function addCheckedUser($allowed, $values, $id)
+ {
+   require "ConnectBD.php";
+   $sql = "UPDATE citizens SET ".pdoSet($allowed)." WHERE idCitizen=$id";
+   $stmt = $pdo->prepare($sql);
+   $stmt->execute($values);
+ }
+ function delCheckedUser($id)
+ {
+   try
+   {
+     require "ConnectBD.php";
+     $stmt = $pdo->prepare("DELETE FROM citizens WHERE idCitizen = ?");
+     $stmt->execute([$id]);
+     return true;
+   } catch (\Exception $e)
+   {
+     $ans['error']=$e->getMessage();
+     return $ans;
+   }
+
+ }
+function statistic($id)
+{
+  require "ConnectBD.php";
+  $stmt = $pdo->prepare("CALL statistic($id)");
+  $stmt->execute();
+  $res = pdoToArray($stmt);
+  $data =  array();
+  $filterOutKeys = array('crime', 'fio');
+  foreach ($res as $key)
+  {
+    $data[$key['id']]['name'] = $key['name'];
+    $data[$key['id']]['date'] = $key['date'];
+    $data[$key['id']]['city'] = $key['city'];
+    $data[$key['id']]['participants'] = $key['participants'];
+    if (array_key_exists('crime', $key)) $data[$key['id']]['crime'][]= array_intersect_key($key, array_flip($filterOutKeys));
+  }
+  return $data;
+}
    //------------------------Вспомогательные функции----------------------------------
+   function execAdminField($str)
+   {
+     try
+     {
+       require "ConnectBD.php";
+       $stmt = $pdo->prepare($str);
+       $stmt->execute();
+     }
+     catch(Exception $e)
+     {
+       return 'Неверный запрос';
+     }
+     return pdoToArray($stmt);
+   }
  function pdoSet($allowed) // функция для оформления в sql запрос - какие поля буду заполнять и чем (поле $field получит $field из $values), нашла и переделала для себя
  {
   $set = '';

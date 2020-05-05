@@ -19,3 +19,7 @@ body
   margin-right: auto;
   width: 6em;
 }
+h2:hover
+{
+  cursor: pointer;
+}

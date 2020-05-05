@@ -1,5 +1,7 @@
 <?php
 require "logic/autho.php";
+include "logic/checkPermission.php";
+checkPermission(1);
 ?>
 <link href="https://getbootstrap.ru/docs/3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="css/my3.css">

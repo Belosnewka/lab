@@ -1,6 +1,8 @@
 <?php
 require "logic/autho.php";
+include "logic/checkPermission.php";
 include "logic/dbLogic/workWithDB.php";
+checkPermission(1);
 $id=0;
 if (isset($_GET['id'])) $id=$_GET['id'];
 $res=askCityWithIDFromBD($id);
